@@ -7,6 +7,11 @@
 
 #project(LuaJIT C ASM)
 
+find_program(GIT_EXECUTABLE git REQUIRED)
+if (NOT GIT_EXECUTABLE)
+  message(STATUS "Git must be available to build luajit")
+endif ()
+
 SET(LUAJIT_DIR ${CMAKE_CURRENT_LIST_DIR}/luajit)
 
 SET(CMAKE_REQUIRED_INCLUDES
@@ -260,7 +265,7 @@ if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
   set(GIT_FORMAT %%ct)
 endif()
 add_custom_command(OUTPUT ${LUAJIT_DIR}/src/luajit_relver.txt
-  COMMAND git show -s --format=${GIT_FORMAT} > ${LUAJIT_DIR}/src/luajit_relver.txt
+  COMMAND "${GIT_EXECUTABLE}" show -s --format=${GIT_FORMAT} > ${LUAJIT_DIR}/src/luajit_relver.txt
   WORKING_DIRECTORY ${LUAJIT_DIR}
 )
 
@@ -362,6 +367,8 @@ ELSE()
 ENDIF()
 
 target_link_libraries (luajit-5.1 ${LIBS} )
+target_include_directories(luajit-5.1 PUBLIC ${LUAJIT_DIR}/src)
+
 
 IF(WIN32)
   add_executable(luajit ${LUAJIT_DIR}/src/luajit.c)
@@ -384,6 +391,7 @@ ELSE()
   target_link_libraries(luajit ${LIBS})
   SET_TARGET_PROPERTIES(luajit PROPERTIES ENABLE_EXPORTS ON)
 ENDIF()
+
 
 MACRO(LUAJIT_add_custom_commands luajit_target)
   SET(target_srcs "")

@@ -4,8 +4,8 @@
 	branch = v1.x
 [submodule "luajit"]
 	path = deps/luajit
-	url = https://github.com/LuaJIT/LuaJIT.git
-	branch = v2.1
+	url = https://github.com/grumpycoders/LuaJIT.git
+	branch = vendored-clib-virtual
 [submodule "lua"]
 	path = deps/lua
 	url = https://github.com/lua/lua

@@ -65,6 +65,7 @@ if (WITH_SHARED_LIBUV)
   include_directories(${LIBUV_INCLUDE_DIR})
 else (WITH_SHARED_LIBUV)
   include_directories(deps/libuv/include)
+  set_property(GLOBAL PROPERTY CTEST_TARGETS_ADDED 1) # hack to prevent CTest added targets
   add_subdirectory(deps/libuv EXCLUDE_FROM_ALL)
   if (BUILD_MODULE)
     add_definitions( -DBUILDING_UV_SHARED )
